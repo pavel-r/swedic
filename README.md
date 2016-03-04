@@ -1,0 +1,2 @@
+# swedic
+Swedish dictionary service
