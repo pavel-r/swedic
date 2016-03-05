@@ -5,7 +5,7 @@
 
 'use strict';
 import Thing from '../api/thing/thing.model';
-import Dictionary from '../api/thing/dictionary.model';
+import Dictionary from '../api/dictionary/dictionary.model';
 import User from '../api/user/user.model';
 
 Dictionary.find({}).removeAsync()
