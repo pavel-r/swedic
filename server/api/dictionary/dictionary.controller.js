@@ -11,6 +11,7 @@
 
 import _ from 'lodash';
 import Dictionary from './dictionary.model';
+import DictionaryByUser './dictionary.by.user.model';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -19,6 +20,47 @@ function respondWithResult(res, statusCode) {
       res.status(statusCode).json(entity);
     }
   };
+}
+
+function transformToDictionarys(res) {
+  return function(entity){
+    return entity.dictionarys;
+  };
+}
+
+function handleDictionaryByUserNotFound(req){
+  var userId = req.user._id;
+  return function(dictionaryByUser){
+    if(!dictionaryByUser){
+      return DictionaryByUser.createAsync({_id : userId, dictionarys : []});
+    }
+    return dictionaryByUser;
+  }
+}
+
+function addDictionaryToDictionaryByUserAndSave(entity){
+  return function(dictionaryByUser) {
+    dictionaryByUser.dictionarys.push({
+      dictionary_id : entity._id,
+      name : entity.name
+    });
+    dictionaryByUser.saveAsync()
+      .spread(updated => {
+        return updated;
+      });
+  };
+}
+
+function addDictionaryByUser(req){
+  var userId = req.user._id;
+  return function(entity){
+    return DictionaryByUser.findByIdAsync(userId)
+      .then(handleDictionaryByUserNotFound(req))
+      .then(addDictionaryToDictionaryByUserAndSave(entity))
+      .then(dictionaryByUser => {
+        return entity;
+      });
+  }
 }
 
 function saveUpdates(updates) {
@@ -61,9 +103,13 @@ function handleError(res, statusCode) {
 
 // Gets a list of Dictionarys
 export function index(req, res) {
-  Dictionary.findAsync()
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+  DictionaryByUser.findByIdAsync(req.user._id)
+        .then(transformToDictionarys(res))
+        .then(respondWithResult(res))
+        .catch(handleError(res));
+  // Dictionary.findAsync()
+  //   .then(respondWithResult(res))
+  //   .catch(handleError(res));
 }
 
 // Gets a single Dictionary from the DB
@@ -77,6 +123,7 @@ export function show(req, res) {
 // Creates a new Dictionary in the DB
 export function create(req, res) {
   Dictionary.createAsync(req.body)
+    .then(addDictionaryByUser(req))
     .then(respondWithResult(res, 201))
     .catch(handleError(res));
 }

@@ -6,6 +6,7 @@
 'use strict';
 import Thing from '../api/thing/thing.model';
 import Dictionary from '../api/dictionary/dictionary.model';
+import DictionaryByUser from '../api/dictionary/dictionary.by.user.model';
 import User from '../api/user/user.model';
 
 Dictionary.find({}).removeAsync()
@@ -28,6 +29,8 @@ Dictionary.find({}).removeAsync()
       }]
     });
   });
+
+DictionaryByUser.find({}).removeAsync().then();
 
 Thing.find({}).removeAsync()
   .then();
