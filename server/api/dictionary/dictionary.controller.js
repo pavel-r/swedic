@@ -11,7 +11,7 @@
 
 import _ from 'lodash';
 import Dictionary from './dictionary.model';
-import DictionaryByUser './dictionary.by.user.model';
+import DictionaryByUser from './dictionary.by.user.model';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
