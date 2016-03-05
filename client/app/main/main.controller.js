@@ -15,7 +15,7 @@ class MainController {
 
   addDictionary(name) {
     if (name) {
-      this.$http.post('/api/dictionarys', { name: name }).then(response => {
+      this.$http.post('/api/dictionarys', { name: name }).then(() => {
         return this.$http.get('/api/dictionarys');
       }).then(response => {
         this.dictionarys = response.data;
@@ -24,7 +24,7 @@ class MainController {
   }
 
   deleteDictionary(dictionary) {
-    this.$http.delete('/api/dictionarys/' + dictionary._id).then(response => {
+    this.$http.delete('/api/dictionarys/' + dictionary._id).then(() => {
       return this.$http.get('/api/dictionarys');
     }).then(response => {
       this.dictionarys = response.data;
