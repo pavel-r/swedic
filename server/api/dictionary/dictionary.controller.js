@@ -104,6 +104,7 @@ function handleError(res, statusCode) {
 // Gets a list of Dictionarys
 export function index(req, res) {
   DictionaryByUser.findByIdAsync(req.user._id)
+        .then(handleDictionaryByUserNotFound(req))
         .then(transformToDictionarys(res))
         .then(respondWithResult(res))
         .catch(handleError(res));
