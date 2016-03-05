@@ -14,7 +14,7 @@ describe('Controller: MainController', function() {
   // Initialize the controller and a mock scope
   beforeEach(inject(function(_$httpBackend_, $controller, $rootScope, $state) {
     $httpBackend = _$httpBackend_;
-    $httpBackend.expectGET('/api/dictionaries')
+    $httpBackend.expectGET('/api/dictionarys')
       .respond(['HTML5 Boilerplate', 'AngularJS', 'Karma', 'Express']);
 
     scope = $rootScope.$new();
@@ -26,6 +26,6 @@ describe('Controller: MainController', function() {
 
   it('should attach a list of dictionaries to the controller', function() {
     $httpBackend.flush();
-    expect(MainController.awesomeThings.length).toBe(4);
+    expect(MainController.dictionarys.length).toBe(4);
   });
 });

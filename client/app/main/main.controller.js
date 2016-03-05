@@ -6,22 +6,21 @@ class MainController {
 
   constructor($http) {
     this.$http = $http;
-    this.awesomeThings = [];
+    this.dictionarys = [];
 
     $http.get('/api/dictionarys').then(response => {
-      this.awesomeThings = response.data;
+      this.dictionarys = response.data;
     });
   }
 
-  addThing() {
-    if (this.newThing) {
-      this.$http.post('/api/dictionarys', { name: this.newThing });
-      this.newThing = '';
+  addDictionary(name) {
+    if (name) {
+      this.$http.post('/api/dictionarys', { name: name });
     }
   }
 
-  deleteThing(thing) {
-    this.$http.delete('/api/dictionarys/' + thing._id);
+  deleteDictionary(dictionary) {
+    this.$http.delete('/api/dictionarys/' + dictionary._id);
   }
 }
 
