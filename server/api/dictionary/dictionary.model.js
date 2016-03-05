@@ -4,12 +4,8 @@ var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 
 var DictionarySchema = new mongoose.Schema({
   name: String,
-  cards: [{
-  	name : String,
-  	translation : String,
-  	soundUrl : String,
-  	examples : String
-  }]
+  info: String,
+  active: Boolean
 });
 
 export default mongoose.model('Dictionary', DictionarySchema);
