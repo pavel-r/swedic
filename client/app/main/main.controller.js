@@ -8,20 +8,20 @@ class MainController {
     this.$http = $http;
     this.awesomeThings = [];
 
-    $http.get('/api/dictionaries').then(response => {
+    $http.get('/api/dictionarys').then(response => {
       this.awesomeThings = response.data;
     });
   }
 
   addThing() {
     if (this.newThing) {
-      this.$http.post('/api/dictionaries', { name: this.newThing });
+      this.$http.post('/api/dictionarys', { name: this.newThing });
       this.newThing = '';
     }
   }
 
   deleteThing(thing) {
-    this.$http.delete('/api/dictionaries/' + thing._id);
+    this.$http.delete('/api/dictionarys/' + thing._id);
   }
 }
 
