@@ -117,7 +117,7 @@ describe('Dictionary API:', function() {
     it('should respond with the updated dictionary', function() {
       updatedDictionary.name.should.equal('Updated Dictionary');
       updatedDictionary.cards.length.should.equal(1);
-      updatedDictionary.cards[0].should.equal('new card');
+      updatedDictionary.cards[0].name.should.equal('new card');
     });
 
   });
