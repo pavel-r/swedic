@@ -36,7 +36,7 @@ describe('Dictionary API:', function() {
         .post('/api/dictionarys')
         .send({
           name: 'New Dictionary',
-          info: 'This is the brand new dictionary!!!'
+          cards : []
         })
         .expect(201)
         .expect('Content-Type', /json/)
@@ -51,7 +51,7 @@ describe('Dictionary API:', function() {
 
     it('should respond with the newly created dictionary', function() {
       newDictionary.name.should.equal('New Dictionary');
-      newDictionary.info.should.equal('This is the brand new dictionary!!!');
+      newDictionary.cards.length.should.equal(0);
     });
 
   });
@@ -79,7 +79,7 @@ describe('Dictionary API:', function() {
 
     it('should respond with the requested dictionary', function() {
       dictionary.name.should.equal('New Dictionary');
-      dictionary.info.should.equal('This is the brand new dictionary!!!');
+      dictionary.cards.length.should.equal(0);
     });
 
   });
@@ -92,7 +92,12 @@ describe('Dictionary API:', function() {
         .put('/api/dictionarys/' + newDictionary._id)
         .send({
           name: 'Updated Dictionary',
-          info: 'This is the updated dictionary!!!'
+          cards: [{
+            name : 'new card',
+            translation : 'new card translation',
+            soundUrl : '',
+            examples : ''
+          }]
         })
         .expect(200)
         .expect('Content-Type', /json/)
@@ -111,7 +116,8 @@ describe('Dictionary API:', function() {
 
     it('should respond with the updated dictionary', function() {
       updatedDictionary.name.should.equal('Updated Dictionary');
-      updatedDictionary.info.should.equal('This is the updated dictionary!!!');
+      updatedDictionary.cards.length.should.equal(1);
+      updatedDictionary.cards[0].should.equal('new card');
     });
 
   });
