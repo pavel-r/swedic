@@ -22,68 +22,6 @@ function respondWithResult(res, statusCode) {
   };
 }
 
-// function transformToDictionarys(res) {
-//   return function(entity){
-//     return entity.dictionarys;
-//   };
-// }
-
-// function createDictionaryByUserIfNotFound(req){
-//   var userId = req.user._id;
-//   return function(dictionaryByUser){
-//     if(!dictionaryByUser){
-//       return DictionaryByUser.createAsync({_id : userId, dictionarys : []});
-//     }
-//     return dictionaryByUser;
-//   }
-// }
-
-// function addDictionaryToDictionaryByUserAndSave(entity){
-//   return function(dictionaryByUser) {
-//     dictionaryByUser.dictionarys.push({
-//       dictionary_id : entity._id,
-//       name : entity.name
-//     });
-//     return dictionaryByUser.saveAsync()
-//       .spread(updated => {
-//         return updated;
-//       });
-//   };
-// }
-
-// function addDictionaryByUser(req){
-//   var userId = req.user._id;
-//   return function(entity){
-//     return DictionaryByUser.findByIdAsync(userId)
-//       .then(createDictionaryByUserIfNotFound(req))
-//       .then(addDictionaryToDictionaryByUserAndSave(entity))
-//       .then(dictionaryByUser => {
-//         return entity;
-//       });
-//   };
-// }
-
-// function removeDictionaryFromDictionaryByUser(req){
-//   var userId = req.user._id;
-//   return function(){
-//     return DictionaryByUser.findByIdAsync(userId)
-//       .then(removeDictionary(req.params.id))
-//   };
-// }
-
-// function removeDictionary(dictionaryId){
-//   return function(dictionaryByUser){
-//     if(dictionaryByUser){
-//       dictionaryByUser.dictionarys.filter(d => {
-//         return d.dictionary_id !== dictionaryId;
-//       });
-//       return dictionaryByUser.saveAsync()
-//         .spread(updated => {
-//           return updated;
-//         });
-//     }
-//   };
-// }
 
 function saveUpdates(updates) {
   return function(entity) {
@@ -136,11 +74,6 @@ function handleError(res, statusCode) {
 
 // Gets a list of Dictionarys
 export function index(req, res) {
-  // DictionaryByUser.findByIdAsync(req.user._id)
-  //       .then(createDictionaryByUserIfNotFound(req))
-  //       .then(transformToDictionarys(res))
-  //       .then(respondWithResult(res))
-  //       .catch(handleError(res));
   Dictionary.findAsync({user_id : req.user._id})
     .then(respondWithResult(res))
     .catch(handleError(res));
@@ -159,7 +92,6 @@ export function show(req, res) {
 export function create(req, res) {
   req.body.user_id = req.user._id;
   Dictionary.createAsync(req.body)
-    // .then(addDictionaryByUser(req))
     .then(respondWithResult(res, 201))
     .catch(handleError(res));
 }
@@ -183,6 +115,5 @@ export function destroy(req, res) {
     .then(validateUserId(req.user._id))
     .then(handleEntityNotFound(res))
     .then(removeEntity(res))
-    // .then(removeDictionaryFromDictionaryByUser(req))
     .catch(handleError(res));
 }
