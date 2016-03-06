@@ -10,6 +10,15 @@ var dictionaryCtrlStub = {
   destroy: 'dictionaryCtrl.destroy'
 };
 
+var authServiceStub = {
+  isAuthenticated() {
+    return 'authService.isAuthenticated';
+  },
+  hasRole(role) {
+    return 'authService.hasRole.' + role;
+  }
+};
+
 var routerStub = {
   get: sinon.spy(),
   put: sinon.spy(),
@@ -25,7 +34,8 @@ var dictionaryIndex = proxyquire('./index.js', {
       return routerStub;
     }
   },
-  './dictionary.controller': dictionaryCtrlStub
+  './dictionary.controller': dictionaryCtrlStub,
+  '../../auth/auth.service': authServiceStub
 });
 
 describe('Dictionary API Router:', function() {
@@ -38,7 +48,7 @@ describe('Dictionary API Router:', function() {
 
     it('should route to dictionary.controller.index', function() {
       routerStub.get
-        .withArgs('/', 'dictionaryCtrl.index')
+        .withArgs('/', 'authService.isAuthenticated', 'dictionaryCtrl.index')
         .should.have.been.calledOnce;
     });
 
@@ -48,7 +58,7 @@ describe('Dictionary API Router:', function() {
 
     it('should route to dictionary.controller.show', function() {
       routerStub.get
-        .withArgs('/:id', 'dictionaryCtrl.show')
+        .withArgs('/:id', 'authService.isAuthenticated', 'dictionaryCtrl.show')
         .should.have.been.calledOnce;
     });
 
@@ -58,7 +68,7 @@ describe('Dictionary API Router:', function() {
 
     it('should route to dictionary.controller.create', function() {
       routerStub.post
-        .withArgs('/', 'dictionaryCtrl.create')
+        .withArgs('/', 'authService.isAuthenticated', 'dictionaryCtrl.create')
         .should.have.been.calledOnce;
     });
 
@@ -68,7 +78,7 @@ describe('Dictionary API Router:', function() {
 
     it('should route to dictionary.controller.update', function() {
       routerStub.put
-        .withArgs('/:id', 'dictionaryCtrl.update')
+        .withArgs('/:id', 'authService.isAuthenticated', 'dictionaryCtrl.update')
         .should.have.been.calledOnce;
     });
 
@@ -78,7 +88,7 @@ describe('Dictionary API Router:', function() {
 
     it('should route to dictionary.controller.update', function() {
       routerStub.patch
-        .withArgs('/:id', 'dictionaryCtrl.update')
+        .withArgs('/:id', 'authService.isAuthenticated', 'dictionaryCtrl.update')
         .should.have.been.calledOnce;
     });
 
@@ -88,7 +98,7 @@ describe('Dictionary API Router:', function() {
 
     it('should route to dictionary.controller.destroy', function() {
       routerStub.delete
-        .withArgs('/:id', 'dictionaryCtrl.destroy')
+        .withArgs('/:id', 'authService.isAuthenticated', 'dictionaryCtrl.destroy')
         .should.have.been.calledOnce;
     });
 
