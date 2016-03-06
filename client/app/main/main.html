@@ -8,7 +8,7 @@
     <div class="col-lg-12">
       <h1 class="page-header">Dictionaries:</h1>
       <ul class="nav nav-tabs nav-stacked col-md-12 col-lg-12 col-sm-12" ng-repeat="dictionary in main.dictionarys">
-        <li><a href="#/learn/{{dictionary.dictionary_id}}" tooltip="{{dictionary.name}}">{{dictionary.name}}</a>
+        <li><a href="#/learn/{{dictionary._id}}" tooltip="{{dictionary.name}}">{{dictionary.name}}</a>
         <button ng-click="main.deleteDictionary(dictionary)" class="btn btn-danger">
           <span class="glyphicon glyphicon-trash"></span>Delete</button></li>
       </ul>
