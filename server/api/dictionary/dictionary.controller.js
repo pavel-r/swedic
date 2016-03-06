@@ -28,7 +28,7 @@ function transformToDictionarys(res) {
   };
 }
 
-function handleDictionaryByUserNotFound(req){
+function createDictionaryByUserIfNotFound(req){
   var userId = req.user._id;
   return function(dictionaryByUser){
     if(!dictionaryByUser){
@@ -44,7 +44,7 @@ function addDictionaryToDictionaryByUserAndSave(entity){
       dictionary_id : entity._id,
       name : entity.name
     });
-    dictionaryByUser.saveAsync()
+    return dictionaryByUser.saveAsync()
       .spread(updated => {
         return updated;
       });
@@ -55,12 +55,34 @@ function addDictionaryByUser(req){
   var userId = req.user._id;
   return function(entity){
     return DictionaryByUser.findByIdAsync(userId)
-      .then(handleDictionaryByUserNotFound(req))
+      .then(createDictionaryByUserIfNotFound(req))
       .then(addDictionaryToDictionaryByUserAndSave(entity))
       .then(dictionaryByUser => {
         return entity;
       });
-  }
+  };
+}
+
+function removeDictionaryFromDictionaryByUser(req){
+  var userId = req.user._id;
+  return function(){
+    return DictionaryByUser.findByIdAsync(userId)
+      .then(removeDictionary(req.params.id))
+  };
+}
+
+function removeDictionary(dictionaryId){
+  return function(dictionaryByUser){
+    if(dictionaryByUser){
+      dictionaryByUser.dictionarys.filter(d => {
+        return d.dictionary_id !== dictionaryId;
+      });
+      return dictionaryByUser.saveAsync()
+        .spread(updated => {
+          return updated;
+        });
+    }
+  };
 }
 
 function saveUpdates(updates) {
@@ -104,7 +126,7 @@ function handleError(res, statusCode) {
 // Gets a list of Dictionarys
 export function index(req, res) {
   DictionaryByUser.findByIdAsync(req.user._id)
-        .then(handleDictionaryByUserNotFound(req))
+        .then(createDictionaryByUserIfNotFound(req))
         .then(transformToDictionarys(res))
         .then(respondWithResult(res))
         .catch(handleError(res));
@@ -146,5 +168,6 @@ export function destroy(req, res) {
   Dictionary.findByIdAsync(req.params.id)
     .then(handleEntityNotFound(res))
     .then(removeEntity(res))
+    .then(removeDictionaryFromDictionaryByUser(req))
     .catch(handleError(res));
 }

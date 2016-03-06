@@ -7,12 +7,48 @@ var newDictionary;
 
 describe('Dictionary API:', function() {
 
+  var user, token;
+
+  // Clear users before testing
+  before(function() {
+    return User.removeAsync().then(function() {
+      user = new User({
+        name: 'Fake User',
+        email: 'test@example.com',
+        password: 'password'
+      });
+
+      return user.saveAsync();
+    });
+  });
+
+  before(function(done) {
+      request(app)
+        .post('/auth/local')
+        .send({
+          email: 'test@example.com',
+          password: 'password'
+        })
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          token = res.body.token;
+          done();
+        });
+  });
+
+  // Clear users after testing
+  after(function() {
+    return User.removeAsync();
+  });
+
   describe('GET /api/dictionarys', function() {
     var dictionarys;
 
     beforeEach(function(done) {
       request(app)
         .get('/api/dictionarys')
+        .set('authorization', 'Bearer ' + token)
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -34,6 +70,7 @@ describe('Dictionary API:', function() {
     beforeEach(function(done) {
       request(app)
         .post('/api/dictionarys')
+        .set('authorization', 'Bearer ' + token)
         .send({
           name: 'New Dictionary',
           cards : []
@@ -62,6 +99,7 @@ describe('Dictionary API:', function() {
     beforeEach(function(done) {
       request(app)
         .get('/api/dictionarys/' + newDictionary._id)
+        .set('authorization', 'Bearer ' + token)
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -90,6 +128,7 @@ describe('Dictionary API:', function() {
     beforeEach(function(done) {
       request(app)
         .put('/api/dictionarys/' + newDictionary._id)
+        .set('authorization', 'Bearer ' + token)
         .send({
           name: 'Updated Dictionary',
           cards: [{
@@ -127,6 +166,7 @@ describe('Dictionary API:', function() {
     it('should respond with 204 on successful removal', function(done) {
       request(app)
         .delete('/api/dictionarys/' + newDictionary._id)
+        .set('authorization', 'Bearer ' + token)
         .expect(204)
         .end((err, res) => {
           if (err) {
@@ -139,6 +179,7 @@ describe('Dictionary API:', function() {
     it('should respond with 404 when dictionary does not exist', function(done) {
       request(app)
         .delete('/api/dictionarys/' + newDictionary._id)
+        .set('authorization', 'Bearer ' + token)
         .expect(404)
         .end((err, res) => {
           if (err) {
