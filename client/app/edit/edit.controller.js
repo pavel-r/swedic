@@ -7,6 +7,10 @@ angular.module('swedicApp')
   	this.$http.get('/api/dictionarys/' + $stateParams.id).then(response => {
   		this.dictionary = response.data;
   	});
-  	
+
+  	this.addNewCard = function(){
+  		this.editing = true;
+  	};
+
     $scope.message = 'Hello';
   });
