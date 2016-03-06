@@ -7,19 +7,19 @@
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header">Dictionaries:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-12 col-lg-12 col-sm-12" ng-repeat="dictionary in main.dictionarys">
-          <li class="row">
-            <a ui-sref="learn({ id: dictionary._id })" tooltip="{{dictionary.name}}">{{dictionary.name}}</a>
-            <a ui-sref="edit({ id: dictionary._id })" tooltip="{{dictionary.name}}">Edit</a>
-            <button ng-click="main.deleteDictionary(dictionary)" class="btn btn-danger">
+      <ul class="nav nav-tabs nav-stacked col-md-12 col-lg-12 col-sm-12">
+          <li class="row" ng-repeat="dictionary in main.dictionarys">
+            <a class="col-lg-8" ui-sref="learn({ id: dictionary._id })" tooltip="{{dictionary.name}}">{{dictionary.name}}</a>
+            <a class="col-lg-2" ui-sref="edit({ id: dictionary._id })" tooltip="{{dictionary.name}}">Edit</a>
+            <button ng-click="main.deleteDictionary(dictionary)" class="btn btn-danger col-lg-2">
             <span class="glyphicon glyphicon-trash"></span>Delete</button>
           </li>
+          <li class="row">
+            <input type="text" class="col-md-10 col-lg-10 col-sm-10" ng-model="main.newDictionary"></input>
+            <button class="col-md-2" ng-click="main.addDictionary(main.newDictionary)" class="btn btn-primary">
+              <span class="glyphicon glyphicon-plus"></span>Add</button>
+          </li>
       </ul>
-      <div>
-        <input type="text" class="col-md-12 col-lg-12 col-sm-12" ng-model="main.newDictionary"></input>
-        <button ng-click="main.addDictionary(main.newDictionary)" class="btn btn-primary">
-          <span class="glyphicon glyphicon-plus"></span>Add</button>
-      </div>
     </div>
   </div>
 </div>
