@@ -8,13 +8,14 @@
     <div class="col-lg-12">
       <h1 class="page-header">{{main.dictionary.name}}</h1>
       <ul class="nav nav-tabs nav-stacked col-md-12 col-lg-12 col-sm-12">
+      	  <li class="row">
+          	<a class="col-lg-10" ng-click="main.addCard()" tooltip="{{card.name}}">+ Add new card</a>
+          </li>
           <li class="row" ng-repeat="card in main.dictionary.cards">
             <a class="col-lg-10" ng-click="main.editCard(card)" tooltip="{{card.name}}">{{card.name}}</a>
-            <button class="btn btn-danger col-lg-2" ng-click="main.deleteCard(card)">
-            <span class="glyphicon glyphicon-trash col-lg-2"></span>Delete</button>
-          </li>
-          <li class="row">
-          	<a class="col-lg-10" ng-click="main.addCard()" tooltip="{{card.name}}">{{card.name}}</a>
+            <a class="btn btn-danger col-lg-1" ng-click="main.deleteCard(card)">
+            	<span class="glyphicon glyphicon-trash"></span>
+            </a>
           </li>
       </ul>
     </div>
