@@ -119,7 +119,7 @@ function handleEntityNotFound(res) {
 function validateUserId(userId){
   return function(entity){
     if(entity){
-      if(entity.user_id !== userId){
+      if(!userId.equals(entity.user_id)){
         return null;
       }
     }
