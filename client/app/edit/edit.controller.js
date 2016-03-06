@@ -15,7 +15,7 @@ class EditController {
   	});
   }
 
-  addNewCard(name) {
+  addCard(name) {
     if (name) {
     	this.dictionary.cards.push({name : name});
       	this.$http.put('/api/dictionarys/' + this.dictionary._id, this.dictionary).then(response => {
