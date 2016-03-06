@@ -8,9 +8,12 @@
     <div class="col-lg-12">
       <h1 class="page-header">Dictionaries:</h1>
       <ul class="nav nav-tabs nav-stacked col-md-12 col-lg-12 col-sm-12" ng-repeat="dictionary in main.dictionarys">
-        <li><a ui-sref="learn({ id: dictionary._id })" tooltip="{{dictionary.name}}">{{dictionary.name}}</a>
-        <button ng-click="main.deleteDictionary(dictionary)" class="btn btn-danger">
-          <span class="glyphicon glyphicon-trash"></span>Delete</button></li>
+          <li class="row">
+            <a ui-sref="learn({ id: dictionary._id })" tooltip="{{dictionary.name}}">{{dictionary.name}}</a>
+            <a ui-sref="edit({ id: dictionary._id })" tooltip="{{dictionary.name}}">Edit</a>
+            <button ng-click="main.deleteDictionary(dictionary)" class="btn btn-danger">
+            <span class="glyphicon glyphicon-trash"></span>Delete</button>
+          </li>
       </ul>
       <div>
         <input type="text" class="col-md-12 col-lg-12 col-sm-12" ng-model="main.newDictionary"></input>
