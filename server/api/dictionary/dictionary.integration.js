@@ -2,7 +2,7 @@
 
 var app = require('../..');
 import request from 'supertest';
-import User from './user.model';
+import User from '../user/user.model';
 
 var newDictionary;
 
