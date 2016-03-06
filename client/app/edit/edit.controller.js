@@ -1,17 +1,42 @@
 'use strict';
 
-angular.module('swedicApp')
-  .controller('EditCtrl', function ($scope, $stateParams, $http) {
-  	this.$http = $http;
-  	$scope.editing = false;
+(function() {
 
-  	this.$http.get('/api/dictionarys/' + $stateParams.id).then(response => {
-  		$scope.dictionary = response.data;
+class EditController {
+
+  constructor($http, $stateParams) {
+  	this.$stateParams = $stateParams;
+    this.$http = $http;
+    this.dictionary = undefined;
+    this.editing = false;
+
+    $http.get('/api/dictionarys/' + $stateParams.id).then(response => {
+  		this.dictionary = response.data;
   	});
+  }
 
-  	this.addNewCard = function(){
-  		$scope.editing = true;
-  	};
+  addNewCard(name) {
+    if (name) {
+    	this.dictionary.cards.push({name : name});
+      	this.$http.put('/api/dictionarys/' + this.dictionary._id, this.dictionary).then(response => {
+        	this.dictionary = response.data;
+      	});
+    }
+  }
 
-    $scope.message = 'Hello';
-  });
+  deleteCard(card) {
+    if(card){
+    	this.dictionary.cards = this.dictionary.cards.filter( c => {
+    		return c !== card;
+    	});
+    	this.$http.put('/api/dictionarys/' + this.dictionary._id, this.dictionary).then(response => {
+        	this.dictionary = response.data;
+      	});
+    }
+  }
+}
+
+angular.module('swedicApp')
+  .controller('EditController', EditController);
+
+})();

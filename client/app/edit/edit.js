@@ -6,6 +6,7 @@ angular.module('swedicApp')
       .state('edit', {
         url: '/edit/:id',
         templateUrl: 'app/edit/edit.html',
-        controller: 'EditCtrl'
+        controller: 'EditCtrl',
+        controllerAs: 'edit'
       });
   });

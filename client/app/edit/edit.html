@@ -3,38 +3,22 @@
   </div>
 </header>
 
-<div class="container" ng-show="dictionary">
+<div class="container">
   <div class="row">
-    <div class="col-lg-12" ng-if="!editing">
-      <h1 class="page-header">{{dictionary.name}}</h1>
+    <div class="col-lg-12" >
+      <h1 class="page-header">{{edit.dictionary.name}}</h1>
       <ul class="nav nav-tabs nav-stacked col-md-12 col-lg-12 col-sm-12">
       	  <li class="row">
-          	<a class="col-lg-10" ng-click="addCard()" tooltip="{{card.name}}">+ Add new card</a>
+      	  	<input type="text" class="col-md-10 col-lg-10 col-sm-10" ng-model="edit.newCard"></input>
+          	<a class="col-lg-2" ng-click="edit.addCard(edit.newCard)">Add</a>
           </li>
-          <li class="row" ng-repeat="card in dictionary.cards">
-            <a class="col-lg-10" ng-click="editCard(card)" tooltip="{{card.name}}">{{card.name}}</a>
-            <a class="btn btn-danger col-lg-1" ng-click="deleteCard(card)">
+          <li class="row" ng-repeat="card in edit.dictionary.cards">
+            <a class="col-lg-10" ng-click="edit.editCard(card)" tooltip="{{card.name}}">{{card.name}}</a>
+            <a class="btn btn-danger col-lg-1" ng-click="edit.deleteCard(card)">
             	<span class="glyphicon glyphicon-trash"></span>
             </a>
           </li>
       </ul>
-    </div>
-    <div class="col-lg-12" ng-if="editing">
-      <div class="header">Add/Edit card</div>
-		<div class="top-menu">		
-			<button ng-click="saveCard()" id="btn-save-card" class="btn btn-primary">Save</button>
-			<button ng-click="cancel()" id="btn-cancel" class="btn btn-primary">Cancel</button>
-			<button ng-click="translate()" id="btn-tr-card" class="btn btn-default">Translate</button>
-		</div>
-		<div id="card" style="">
-			<label for="name">Word</label> 
-			<input type="text" id="name" name="name" ng-model="card.name"/>
-			<label for="translation">Translation</label>
-			<input type="text" id="translation" name="translation" ng-model="card.translation"/>
-			<label for="sound">Sound</label>
-			<input type="text" id="sound" name="sound" ng-model="card.soundUrl"/>
-		</div>
-		<div id="dicTranslation"></div>
     </div>
   </div>
 </div>
