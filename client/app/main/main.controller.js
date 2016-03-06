@@ -24,7 +24,7 @@ class MainController {
   }
 
   deleteDictionary(dictionary) {
-    this.$http.delete('/api/dictionarys/' + dictionary.dictionary_id).then(() => {
+    this.$http.delete('/api/dictionarys/' + dictionary.dictionary_id).then(() => { // jshint ignore:line
       return this.$http.get('/api/dictionarys');
     }).then(response => {
       this.dictionarys = response.data;
