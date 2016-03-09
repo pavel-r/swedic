@@ -5,6 +5,10 @@
  * GET     /api/dictionarys/:id          ->  show
  * PUT     /api/dictionarys/:id          ->  update
  * DELETE  /api/dictionarys/:id          ->  destroy
+ * 
+ * POST    /api/dictionarys/:id/cards           ->  create
+ * PUT     /api/dictionarys/:id/cards/:cardId   ->  update
+ * DELETE  /api/dictionarys/:id/cards/:cardId   ->  destroy
  */
 
 'use strict';
@@ -116,4 +120,19 @@ export function destroy(req, res) {
     .then(handleEntityNotFound(res))
     .then(removeEntity(res))
     .catch(handleError(res));
+}
+
+// Create a new Card in the Dictionary
+export function createCard(req, res) {
+
+}
+
+// Update a Card in the Dictionary
+export function updateCard(req, res) {
+
+}
+
+// Delete a new Card in the Dictionary
+export function destroyCard(req, res) {
+
 }

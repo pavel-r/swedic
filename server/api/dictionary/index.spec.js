@@ -7,7 +7,10 @@ var dictionaryCtrlStub = {
   show: 'dictionaryCtrl.show',
   create: 'dictionaryCtrl.create',
   update: 'dictionaryCtrl.update',
-  destroy: 'dictionaryCtrl.destroy'
+  destroy: 'dictionaryCtrl.destroy',
+  createCard: 'dictionaryCtrl.createCard',
+  updateCard: 'dictionaryCtrl.updateCard',
+  destroyCard: 'dictionaryCtrl.destroyCard'
 };
 
 var authServiceStub = {
@@ -104,4 +107,34 @@ describe('Dictionary API Router:', function() {
 
   });
 
+
+  describe('POST /api/dictionarys/:id/cards', function() {
+
+    it('should route to dictionary.controller.createCard', function() {
+      routerStub.post
+        .withArgs('/:id/cards', 'authService.isAuthenticated', 'dictionaryCtrl.createCard')
+        .should.have.been.calledOnce;
+    });
+
+  });
+  
+  describe('PUT /api/dictionarys/:id/cards/:cardId', function() {
+
+    it('should route to dictionary.controller.updateCard', function() {
+      routerStub.put
+        .withArgs('/:id/cards/:cardId', 'authService.isAuthenticated', 'dictionaryCtrl.updateCard')
+        .should.have.been.calledOnce;
+    });
+
+  });
+  
+  describe('DELETE /api/dictionarys/:id/cards/:cardId', function() {
+
+    it('should route to dictionary.controller.destroyCard', function() {
+      routerStub.delete
+        .withArgs('/:id/cards/:cardId', 'authService.isAuthenticated', 'dictionaryCtrl.destroyCard')
+        .should.have.been.calledOnce;
+    });
+
+  });
 });
