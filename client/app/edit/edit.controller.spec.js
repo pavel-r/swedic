@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: EditCtrl', function () {
+describe('Controller: EditController', function () {
 
   // load the controller's module
   beforeEach(module('swedicApp'));
 
-  var EditCtrl, scope;
+  var EditController, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    EditCtrl = $controller('EditCtrl', {
+    EditController = $controller('EditController', {
       $scope: scope
     });
   }));
