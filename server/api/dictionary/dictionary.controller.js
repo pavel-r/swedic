@@ -76,6 +76,40 @@ function handleError(res, statusCode) {
   };
 }
 
+function createCardForDictionary(card){
+  return function(entity){
+    if (card._id) {
+      delete card._id;
+    }
+    entity.cards.push(card);
+    return entity.saveAsync()
+      .spread(updated => {
+        return updated;
+      });
+  };
+}
+
+function removeCardFromDictionary(cardId){
+  return function(entity){
+    entity.cards.pull({_id : cardId});
+    return entity.saveAsync()
+      .spread(updated => {
+        return updated;
+      });
+  };
+}
+
+function updateCardInDictionary(update){
+  return function(entity){
+    entity.cards.pull({_id : update._id});
+    entity.cards.push(update);
+    return entity.saveAsync()
+      .spread(updated => {
+        return updated;
+      });
+  };
+}
+
 // Gets a list of Dictionarys
 export function index(req, res) {
   Dictionary.findAsync({user_id : req.user._id})
@@ -124,15 +158,30 @@ export function destroy(req, res) {
 
 // Create a new Card in the Dictionary
 export function createCard(req, res) {
-
+  Dictionary.findByIdAsync(req.params.id)
+    .then(validateUserId(req.user._id))
+    .then(handleEntityNotFound(res))
+    .then(createCardForDictionary(req.body))
+    .then(respondWithResult(res))
+    .catch(handleError(res));
 }
 
 // Update a Card in the Dictionary
 export function updateCard(req, res) {
-
+  Dictionary.findByIdAsync(req.params.id)
+    .then(validateUserId(req.user._id))
+    .then(handleEntityNotFound(res))
+    .then(updateCardInDictionary(req.body))
+    .then(respondWithResult(res))
+    .catch(handleError(res));
 }
 
 // Delete a new Card in the Dictionary
 export function destroyCard(req, res) {
-
+  Dictionary.findByIdAsync(req.params.id)
+    .then(validateUserId(req.user._id))
+    .then(handleEntityNotFound(res))
+    .then(removeCardFromDictionary(req.params.cardId))
+    .then(respondWithResult(res))
+    .catch(handleError(res));
 }

@@ -73,8 +73,7 @@ describe('Dictionary API:', function() {
         .post('/api/dictionarys')
         .set('authorization', 'Bearer ' + token)
         .send({
-          name: 'New Dictionary',
-          cards : []
+          name: 'New Dictionary'
         })
         .expect(201)
         .expect('Content-Type', /json/)
@@ -94,6 +93,144 @@ describe('Dictionary API:', function() {
 
   });
 
+  describe('POST /api/dictionarys/:id/cards', function() {
+    beforeEach(function(done) {
+      request(app)
+        .post('/api/dictionarys/' + newDictionary._id + '/cards')
+        .set('authorization', 'Bearer ' + token)
+        .send({
+          name: 'new card'
+        })
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          newDictionary = res.body;
+          done();
+        });
+    });
+
+    it('should create new card in the dictionary', function() {
+      newDictionary.name.should.equal('New Dictionary');
+      newDictionary.cards.length.should.equal(1);
+      newDictionary.cards[0].name.should.equal('new card');
+    });
+
+  });
+
+  describe('GET /api/dictionarys/:id', function() {
+    var dictionary;
+
+    beforeEach(function(done) {
+      request(app)
+        .get('/api/dictionarys/' + newDictionary._id)
+        .set('authorization', 'Bearer ' + token)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          dictionary = res.body;
+          done();
+        });
+    });
+
+    afterEach(function() {
+      dictionary = {};
+    });
+
+    it('should respond with dictionary containing created card', function() {
+      dictionary.name.should.equal('New Dictionary');
+      dictionary.cards.length.should.equal(1);
+      dictionary.cards[0].name.should.equal('new card');
+    });
+
+  });
+  
+  describe('PUT /api/dictionarys/:id/cards/:cardId', function() {
+    beforeEach(function(done) {
+      request(app)
+        .put('/api/dictionarys/' + newDictionary._id + '/cards/' + newDictionary.cards[0]._id)
+        .set('authorization', 'Bearer ' + token)
+        .send({
+          _id : newDictionary.cards[0]._id,
+          name: 'updated card'
+        })
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          newDictionary = res.body;
+          done();
+        });
+    });
+
+    it('should update card in the dictionary', function() {
+      newDictionary.name.should.equal('New Dictionary');
+      newDictionary.cards.length.should.equal(1);
+      newDictionary.cards[0].name.should.equal('updated card');
+    });
+
+  });
+
+  describe('GET /api/dictionarys/:id', function() {
+    var dictionary;
+
+    beforeEach(function(done) {
+      request(app)
+        .get('/api/dictionarys/' + newDictionary._id)
+        .set('authorization', 'Bearer ' + token)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          dictionary = res.body;
+          done();
+        });
+    });
+
+    afterEach(function() {
+      dictionary = {};
+    });
+
+    it('should respond with dictionary containing updated card', function() {
+      dictionary.name.should.equal('New Dictionary');
+      dictionary.cards.length.should.equal(1);
+      dictionary.cards[0].name.should.equal('updated card');
+    });
+
+  });
+  
+  describe('DELETE /api/dictionarys/:id/cards/:cardId', function() {
+    beforeEach(function(done) {
+      request(app)
+        .delete('/api/dictionarys/' + newDictionary._id + '/cards/' + newDictionary.cards[0]._id)
+        .set('authorization', 'Bearer ' + token)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          newDictionary = res.body;
+          done();
+        });
+    });
+
+    it('should succesfully delete card from the dictionary', function() {
+      newDictionary.name.should.equal('New Dictionary');
+      newDictionary.cards.length.should.equal(0);
+    });
+
+  });
+  
   describe('GET /api/dictionarys/:id', function() {
     var dictionary;
 
@@ -131,13 +268,7 @@ describe('Dictionary API:', function() {
         .put('/api/dictionarys/' + newDictionary._id)
         .set('authorization', 'Bearer ' + token)
         .send({
-          name: 'Updated Dictionary',
-          cards: [{
-            name : 'new card',
-            translation : 'new card translation',
-            soundUrl : '',
-            examples : ''
-          }]
+          name: 'Updated Dictionary'
         })
         .expect(200)
         .expect('Content-Type', /json/)
@@ -156,8 +287,7 @@ describe('Dictionary API:', function() {
 
     it('should respond with the updated dictionary', function() {
       updatedDictionary.name.should.equal('Updated Dictionary');
-      updatedDictionary.cards.length.should.equal(1);
-      updatedDictionary.cards[0].name.should.equal('new card');
+      updatedDictionary.cards.length.should.equal(0);
     });
 
   });
