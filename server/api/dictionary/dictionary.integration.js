@@ -156,7 +156,6 @@ describe('Dictionary API:', function() {
         .put('/api/dictionarys/' + newDictionary._id + '/cards/' + newDictionary.cards[0]._id)
         .set('authorization', 'Bearer ' + token)
         .send({
-          _id : newDictionary.cards[0]._id,
           name: 'updated card'
         })
         .expect(200)

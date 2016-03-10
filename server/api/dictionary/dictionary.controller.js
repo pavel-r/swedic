@@ -78,35 +78,22 @@ function handleError(res, statusCode) {
 
 function createCardForDictionary(card){
   return function(entity){
-    if (card._id) {
-      delete card._id;
-    }
     entity.cards.push(card);
-    return entity.saveAsync()
-      .spread(updated => {
-        return updated;
-      });
+    return entity;
   };
 }
 
 function removeCardFromDictionary(cardId){
   return function(entity){
     entity.cards.pull({_id : cardId});
-    return entity.saveAsync()
-      .spread(updated => {
-        return updated;
-      });
+    return entity;
   };
 }
 
-function updateCardInDictionary(update){
+function updateCardInDictionary(cardId, update){
   return function(entity){
-    entity.cards.pull({_id : update._id});
-    entity.cards.push(update);
-    return entity.saveAsync()
-      .spread(updated => {
-        return updated;
-      });
+    _.merge(entity.cards.id(cardId), update);
+    return entity;
   };
 }
 
@@ -158,20 +145,28 @@ export function destroy(req, res) {
 
 // Create a new Card in the Dictionary
 export function createCard(req, res) {
+  if(req.body._id){
+    delete req.body._id;
+  }
   Dictionary.findByIdAsync(req.params.id)
     .then(validateUserId(req.user._id))
     .then(handleEntityNotFound(res))
     .then(createCardForDictionary(req.body))
+    .then(saveUpdates())
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
 // Update a Card in the Dictionary
 export function updateCard(req, res) {
+  if(req.body._id){
+    delete req.body._id;
+  }
   Dictionary.findByIdAsync(req.params.id)
     .then(validateUserId(req.user._id))
     .then(handleEntityNotFound(res))
-    .then(updateCardInDictionary(req.body))
+    .then(updateCardInDictionary(req.params.cardId, req.body))
+    .then(saveUpdates())
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
@@ -182,6 +177,7 @@ export function destroyCard(req, res) {
     .then(validateUserId(req.user._id))
     .then(handleEntityNotFound(res))
     .then(removeCardFromDictionary(req.params.cardId))
+    .then(saveUpdates())
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
