@@ -17,8 +17,9 @@ class EditController {
 
   addCard(name) {
     if (name) {
-    	this.dictionary.cards.push({name : name});
-      	this.$http.post('/api/dictionarys/' + this.dictionary._id + '/cards', this.dictionary).then(response => {
+      var newCard = {name : name };
+    	this.dictionary.cards.push(newCard);
+      	this.$http.post('/api/dictionarys/' + this.dictionary._id + '/cards', newCard).then(response => {
         	this.dictionary = response.data;
       	});
     }
@@ -29,7 +30,7 @@ class EditController {
     	this.dictionary.cards = this.dictionary.cards.filter( c => {
     		return c !== card;
     	});
-    	this.$http.delete('/api/dictionarys/' + this.dictionary._id + '/cards/' + card._id, this.dictionary).then(response => {
+    	this.$http.delete('/api/dictionarys/' + this.dictionary._id + '/cards/' + card._id).then(response => {
         	this.dictionary = response.data;
       	});
     }

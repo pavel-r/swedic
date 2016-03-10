@@ -7,22 +7,27 @@
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header">Dictionaries:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-12 col-lg-12 col-sm-12">
-          <li class="row" ng-repeat="dictionary in main.dictionarys">
-            <a class="col-lg-9" ui-sref="learn({ id: dictionary._id })" tooltip="{{dictionary.name}}">{{dictionary.name}}</a>
-            <a class="col-lg-1 btn btn-default" ui-sref="edit({ id: dictionary._id })" tooltip="{{dictionary.name}}">
-              <span class="glyphicon glyphicon-pencil"></span>
-            </a>
-            <a class="btn btn-danger col-lg-1" ng-click="main.deleteDictionary(dictionary)">
+
+      <div class="list-group">
+        <a class="list-group-item" ng-repeat="dictionary in main.dictionarys" ui-sref="learn({ id: dictionary._id })">
+          {{dictionary.name}}
+          <span class="pull-right">
+            <button class="btn btn-xs btn-info" ui-sref="edit({ id: dictionary._id })">
+               <span class="glyphicon glyphicon-pencil"></span>Edit</button>
+            <button class="btn btn-xs btn-warning" ng-click="main.deleteDictionary(dictionary); $event.stopPropagation();">
               <span class="glyphicon glyphicon-trash"></span>
-            </a>
-          </li>
-          <li class="row">
-            <input type="text" class="col-md-10 col-lg-10 col-sm-10" ng-model="main.newDictionary"></input>
-            <button class="col-md-2" ng-click="main.addDictionary(main.newDictionary)" class="btn btn-primary">
-              <span class="glyphicon glyphicon-plus"></span>Add</button>
-          </li>
-      </ul>
+            </button>
+          </span>
+        </a>
+        <span class="list-group-item" href=#>
+          <input type="text" class="" ng-model="main.newDictionary"></input>
+          <span class="pull-right">
+            <button class="btn btn-xs btn-info" ng-click="main.addDictionary(main.newDictionary)">
+               <span class="glyphicon glyphicon-plus"></span>Add</button>
+          </span>
+        </span>
+      </div>
+
     </div>
   </div>
 </div>

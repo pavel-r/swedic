@@ -21,6 +21,7 @@ class MainController {
         this.dictionarys = response.data;
       });
     }
+    return false;//revent default
   }
 
   deleteDictionary(dictionary) {
@@ -29,6 +30,7 @@ class MainController {
     }).then(response => {
       this.dictionarys = response.data;
     });
+    return false;//prevent default
   }
 }
 
