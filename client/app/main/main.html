@@ -9,16 +9,16 @@
       <h1 class="page-header">Dictionaries:</h1>
 
       <div class="list-group">
-        <a class="list-group-item" ng-repeat="dictionary in main.dictionarys" ui-sref="learn({ id: dictionary._id })">
-          {{dictionary.name}}
+        <span class="list-group-item" ng-repeat="dictionary in main.dictionarys">
+          <a ui-sref="learn({ id: dictionary._id })">{{dictionary.name}}</a>
           <span class="pull-right">
-            <button class="btn btn-xs btn-info" ui-sref="edit({ id: dictionary._id })">
-               <span class="glyphicon glyphicon-pencil"></span>Edit</button>
+            <a class="btn btn-xs btn-info" ui-sref="edit({ id: dictionary._id })">
+               <span class="glyphicon glyphicon-pencil"></span>Edit</a>
             <button class="btn btn-xs btn-warning" ng-click="main.deleteDictionary(dictionary); $event.stopPropagation();">
               <span class="glyphicon glyphicon-trash"></span>
             </button>
           </span>
-        </a>
+        </span>
         <span class="list-group-item" href=#>
           <input type="text" class="" ng-model="main.newDictionary"></input>
           <span class="pull-right">
