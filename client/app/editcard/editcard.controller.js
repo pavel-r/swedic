@@ -20,14 +20,6 @@ class EditCardController {
     });
   }
 
-  // setDictionary(dictionary) {
-  //   var self = this;
-  //   self.dictionary = dictionary;
-  //   self.card = dictionary.cards.find(c => {
-  //     return c._id === self.$stateParams.cardId;
-  //   });
-  // }
-
   goToEditState(){
     this.$state.go('edit', {id : this.$stateParams.id});
   }

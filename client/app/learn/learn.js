@@ -6,6 +6,7 @@ angular.module('swedicApp')
       .state('learn', {
         url: '/learn/:id',
         templateUrl: 'app/learn/learn.html',
-        controller: 'LearnCtrl'
+        controller: 'LearnCtrl',
+        controllerAs: 'learn'
       });
   });
