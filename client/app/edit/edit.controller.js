@@ -4,35 +4,32 @@
 
 class EditController {
 
-  constructor($http, $stateParams) {
-  	this.$stateParams = $stateParams;
-    this.$http = $http;
-    this.dictionary = undefined;
-    this.editing = false;
+  constructor($http, $stateParams, dictionarys) {
+    var self = this;
+  	self.$stateParams = $stateParams;
+    self.dictioanrysDao = dictionarys;
+    self.dictionary = undefined;
 
-    $http.get('/api/dictionarys/' + $stateParams.id).then(response => {
-  		this.dictionary = response.data;
-  	});
+    dictionarys.getDictionaryById($stateParams.id).then(data => {
+      self.dictionary = data;
+    });
   }
 
   addCard(name) {
+    var self = this;
     if (name) {
-      var newCard = {name : name };
-    	this.dictionary.cards.push(newCard);
-      	this.$http.post('/api/dictionarys/' + this.dictionary._id + '/cards', newCard).then(response => {
-        	this.dictionary = response.data;
+      	self.dictioanrysDao.addCardToDictionary(self.dictionary, {name : name }).then(updatedDictionary => {
+        	self.dictionary = updatedDictionary;
       	});
     }
   }
 
   deleteCard(card) {
+    var self = this;
     if(card){
-    	this.dictionary.cards = this.dictionary.cards.filter( c => {
-    		return c !== card;
-    	});
-    	this.$http.delete('/api/dictionarys/' + this.dictionary._id + '/cards/' + card._id).then(response => {
-        	this.dictionary = response.data;
-      	});
+      self.dictioanrysDao.deleteCardFromDictionary(self.dictionary, card).then(updatedDictionary => {
+        self.dictionary = updatedDictionary;
+      });
     }
   }
 }

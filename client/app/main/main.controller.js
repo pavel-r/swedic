@@ -4,30 +4,30 @@
 
 class MainController {
 
-  constructor($http) {
-    this.$http = $http;
-    this.dictionarys = [];
+  constructor($http, dictionarys) {
+    var self = this;
+    self.dictionarysDao = dictionarys;
 
-    $http.get('/api/dictionarys').then(response => {
-      this.dictionarys = response.data;
+    self.dictionarys = [];
+
+    dictionarys.getDictionarys().then(data => {
+      self.dictionarys = data;
     });
   }
 
   addDictionary(name) {
+    var self = this;
     if (name) {
-      this.$http.post('/api/dictionarys', { name: name }).then(() => {
-        return this.$http.get('/api/dictionarys');
-      }).then(response => {
-        this.dictionarys = response.data;
+      self.dictionarysDao.addDictionary({name : name}).then(data => {
+        self.dictionarys = data;
       });
     }
   }
 
   deleteDictionary(dictionary) {
-    this.$http.delete('/api/dictionarys/' + dictionary._id).then(() => { // jshint ignore:line
-      return this.$http.get('/api/dictionarys');
-    }).then(response => {
-      this.dictionarys = response.data;
+    var self = this;
+    self.dictionarysDao.deleteDictionary(dictionary).then(data => {
+      self.dictionarys = data;
     });
   }
 }
