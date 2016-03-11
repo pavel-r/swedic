@@ -15,15 +15,6 @@ class EditController {
     });
   }
 
-  addCard(name) {
-    var self = this;
-    if (name) {
-      	self.dictioanrysDao.addCardToDictionary(self.dictionary, {name : name }).then(updatedDictionary => {
-        	self.dictionary = updatedDictionary;
-      	});
-    }
-  }
-
   deleteCard(card) {
     var self = this;
     if(card){

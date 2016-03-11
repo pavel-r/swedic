@@ -10,14 +10,14 @@
       
       <div class="list-group">
         <span class="list-group-item">
-          <input type="text" class="" ng-model="edit.newCard"></input>
+          &nbsp;
           <span class="pull-right">
-            <button class="btn btn-xs btn-info" ng-click="edit.addCard(edit.newCard)">
-               <span class="glyphicon glyphicon-plus"></span>Add</button>
+            <a class="btn btn-xs btn-info" ui-sref="editcard({ id: edit.dictionary._id, cardId : 'new'})">
+               <span class="glyphicon glyphicon-plus"></span>Add new card</a>
           </span>
         </span>
         <span class="list-group-item" ng-repeat="card in edit.dictionary.cards">
-          <a class="" ui-sref="edit.card({ id: card._id })">{{card.name}}</a>
+          <a class="" ui-sref="editcard({ id: edit.dictionary._id, cardId: card._id })">{{card.name}}</a>
           <span class="pull-right">
             <button class="btn btn-xs btn-warning" ng-click="edit.deleteCard(card)">
               <span class="glyphicon glyphicon-trash"></span>
