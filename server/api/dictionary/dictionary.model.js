@@ -9,7 +9,7 @@ var DictionarySchema = new mongoose.Schema({
   	name : String,
   	translation : String,
   	soundUrl : String,
-  	examples : String
+  	learnt : Boolean
   }]
 });
 

@@ -9,9 +9,6 @@ class LearnCtrl {
     self.$state = $state;
   	self.$stateParams = $stateParams;
     self.dictioanrysDao = dictionarys;
-    self.dictionary = undefined;
-    self.cards = [];
-    self.card = undefined;
 
     dictionarys.getDictionaryById($stateParams.id).then(dictionary => {
       self.dictionary = dictionary;
@@ -24,6 +21,7 @@ class LearnCtrl {
     self.cards = _.shuffle(self.dictionary.cards.filter(c => {
         return !c.learnt;
     }));
+    self.totalCardsToLearn = self.cards.length;
     if(self.cards.length === 0){
       self.$state.go('edit', {id : self.$stateParams.id});
     } else {
