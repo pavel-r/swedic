@@ -8,6 +8,7 @@ angular.module('swedicApp', [
   'ngResource',
   'ngSanitize',
   'ui.router',
+  'ui.bootstrap',
   'validation.match'
 ])
   .config(function($urlRouterProvider, $locationProvider) {
