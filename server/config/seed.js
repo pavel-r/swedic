@@ -4,36 +4,13 @@
  */
 
 'use strict';
-import Thing from '../api/thing/thing.model';
 import Dictionary from '../api/dictionary/dictionary.model';
-import DictionaryByUser from '../api/dictionary/dictionary.by.user.model';
 import User from '../api/user/user.model';
 
 Dictionary.find({}).removeAsync()
   .then(() => {
-    Dictionary.create({
-      name: 'SwedishA',
-      cards: []
-    }, {
-      name: 'SwedishB',
-      cards: [{
-        name : 'hey',
-        translation : 'hi',
-        soundUrl : '',
-        examples : 'hey du'
-      },{
-        name : 'ett',
-        translation : 'one',
-        soundUrl : '',
-        examples : 'ett apple'
-      }]
-    });
+    //Dictionary.create();
   });
-
-DictionaryByUser.find({}).removeAsync().then();
-
-Thing.find({}).removeAsync()
-  .then();
 
 User.find({}).removeAsync()
   .then(() => {
