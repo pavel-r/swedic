@@ -13,11 +13,11 @@
       
       <div class="list-group">
         <span class="list-group-item">
-          &nbsp;
-          <span class="pull-right">
+          <span class="">
             <a class="btn btn-xs btn-info" ui-sref="editcard({ id: edit.dictionary._id, cardId : 'new'})">
                <span class="glyphicon glyphicon-plus"></span>Add new card</a>
           </span>
+          &nbsp;
         </span>
         <span class="list-group-item" ng-repeat="card in edit.dictionary.cards">
           <a class="" ui-sref="editcard({ id: edit.dictionary._id, cardId: card._id })">{{card.name}}</a>

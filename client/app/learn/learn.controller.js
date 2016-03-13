@@ -39,6 +39,7 @@ class LearnCtrl {
   
   nextCard(){
     var self = this;
+    self.showTranslation = false;
     if(self.cards.length === 0) {
       self.resetCards();
     } else {
