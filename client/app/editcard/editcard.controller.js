@@ -4,13 +4,12 @@
 
 class EditCardController {
 
-  constructor($http, $stateParams, $state, dictionarys) {
+  constructor($stateParams, $state, dictionarys, translate) {
     var self = this;
     self.$state = $state;
   	self.$stateParams = $stateParams;
     self.dictioanrysDao = dictionarys;
-    self.dictionary = undefined;
-    self.card = {};
+    self.translateService = translate;
 
     dictionarys.getDictionaryById($stateParams.id).then(dictionary => {
       self.dictionary = dictionary;
@@ -39,6 +38,14 @@ class EditCardController {
     }
   }
   
+  translateCard(card) {
+    var self = this;
+    self.translateService.translate(card).then(resp => {
+      card.translation = resp.translation;
+      card.soundUrl = resp.soundUrl;
+      self.translationHtml = resp.trustedHtml;
+    });
+  }
 }
 
 angular.module('swedicApp')

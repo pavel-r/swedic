@@ -26,6 +26,8 @@
           <input type="text" id="sound" name="sound" class="form-control" ng-model="editcard.card.soundUrl" />
         </div>
         <button class="btn btn-primary" ng-click="editcard.saveCard(editcard.card)">Save</button>
+        <button class="btn btn-primary" ng-click="editcard.translateCard(editcard.card)">Translate</button>
+        <div ng-bind-html="editcard.translationHtml"></div>
       </div>
 
     </div>

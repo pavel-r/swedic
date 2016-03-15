@@ -11,11 +11,15 @@ export function translate(req, res){
 	};
 	http.get(options, function(resp){
 		resp.setEncoding('utf8');
+		var body = '';
 		resp.on('data', function (chunk) {
-			res.send({htmlData : "" + chunk});
+		    body += chunk;
+		});
+		resp.on('end', function(){
+			res.status(200).json({htmlData : body});
 		});
 	}).on('error', function(e){
 		console.log("Error from Lexin: " + e.message);
-		res.send("");
+		res.status(500).send(e);
 	});
 }

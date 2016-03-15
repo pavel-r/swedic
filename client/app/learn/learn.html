@@ -31,8 +31,10 @@
             {{learn.showTranslation ? learn.card.translation : ''}}
           </span>
         </div>
-        <button class="btn btn-primary" ng-click="learn.learnCard(learn.card)">Learn</button>
         <button class="btn btn-primary" ng-click="learn.nextCard()">Next</button>
+        <button class="btn btn-success" ng-click="learn.learnCard(learn.card)">Learn</button>
+        <button class="btn btn-primary" ng-click="learn.translateCard(learn.card)">Translate</button>
+        <div ng-bind-html="learn.translationHtml"></div>
       </div>
 
     </div>

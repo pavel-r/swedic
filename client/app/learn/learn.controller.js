@@ -4,11 +4,12 @@
 
 class LearnCtrl {
 
-  constructor($http, $stateParams, $state, dictionarys) {
+  constructor($http, $stateParams, $state, dictionarys, translate) {
     var self = this;
     self.$state = $state;
   	self.$stateParams = $stateParams;
     self.dictioanrysDao = dictionarys;
+    self.translateService = translate;
 
     dictionarys.getDictionaryById($stateParams.id).then(dictionary => {
       self.dictionary = dictionary;
@@ -40,6 +41,7 @@ class LearnCtrl {
   nextCard(){
     var self = this;
     self.showTranslation = false;
+    self.translationHtml = '';
     if(self.cards.length === 0) {
       self.resetCards();
     } else {
@@ -47,6 +49,12 @@ class LearnCtrl {
     }
   }
   
+  translateCard(card) {
+    var self = this;
+    self.translateService.translate(card).then(resp => {
+      self.translationHtml = resp.trustedHtml;
+    });
+  }
 }
 
 angular.module('swedicApp')
