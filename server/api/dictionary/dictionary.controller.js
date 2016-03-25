@@ -105,7 +105,8 @@ export function index(req, res) {
 
 // Gets a single Dictionary from the DB
 export function show(req, res) {
-  Dictionary.findByIdAsync(req.params.id)
+  var projection = req.query.to_json ? '-_id -__v -cards._id' : '';
+  Dictionary.findByIdAsync(req.params.id, projection)
     .then(validateUserId(req.user._id))
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))

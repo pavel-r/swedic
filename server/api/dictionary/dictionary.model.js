@@ -13,4 +13,17 @@ var DictionarySchema = new mongoose.Schema({
   }]
 });
 
+// specify the transform schema option
+if (!DictionarySchema.options.toObject) DictionarySchema.options.toObject = {};
+DictionarySchema.options.toObject.transform = function (doc, ret, options) {
+  delete ret.user_id;
+};
+
+
+// specify the transform schema option
+if (!DictionarySchema.options.toJSON) DictionarySchema.options.toJSON = {};
+DictionarySchema.options.toJSON.transform = function (doc, ret, options) {
+  delete ret.user_id;
+};
+
 export default mongoose.model('Dictionary', DictionarySchema);

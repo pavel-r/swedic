@@ -17,6 +17,13 @@
             <a class="btn btn-xs btn-info" ui-sref="editcard({ id: edit.dictionary._id, cardId : 'new'})">
                <span class="glyphicon glyphicon-plus"></span>Add new card</a>
           </span>
+          <span>
+            <a class="btn btn-xs btn-info" 
+              href="/api/dictionarys/{{edit.dictionary._id}}?access_token={{edit.$cookies.get('token')}}&to_json=true" 
+              download="{{edit.dictionary.name}}.json" target="_self">
+              <span class="glyphicon glyphicon-export">Export</span>
+            </a>
+          </span>
           &nbsp;
         </span>
         <span class="list-group-item" ng-repeat="card in edit.dictionary.cards">

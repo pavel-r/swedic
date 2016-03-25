@@ -4,9 +4,10 @@
 
 class EditController {
 
-  constructor($http, $stateParams, dictionarys) {
+  constructor($http, $stateParams, dictionarys, $cookies) {
     var self = this;
   	self.$stateParams = $stateParams;
+  	self.$cookies = $cookies;
     self.dictioanrysDao = dictionarys;
     self.dictionary = undefined;
 
