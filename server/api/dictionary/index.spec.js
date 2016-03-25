@@ -6,6 +6,7 @@ var dictionaryCtrlStub = {
   index: 'dictionaryCtrl.index',
   show: 'dictionaryCtrl.show',
   create: 'dictionaryCtrl.create',
+  upload: 'dictionaryCtrl.create',
   update: 'dictionaryCtrl.update',
   destroy: 'dictionaryCtrl.destroy',
   createCard: 'dictionaryCtrl.createCard',
@@ -19,6 +20,12 @@ var authServiceStub = {
   },
   hasRole(role) {
     return 'authService.hasRole.' + role;
+  }
+};
+
+var uploadServiceStub = {
+  fileToReqBody(){
+    return 'uploadService.fileToReqBody';
   }
 };
 
@@ -38,7 +45,8 @@ var dictionaryIndex = proxyquire('./index.js', {
     }
   },
   './dictionary.controller': dictionaryCtrlStub,
-  '../../auth/auth.service': authServiceStub
+  '../../auth/auth.service': authServiceStub,
+  '../../upload/upload.service': uploadServiceStub
 });
 
 describe('Dictionary API Router:', function() {
@@ -77,6 +85,16 @@ describe('Dictionary API Router:', function() {
 
   });
 
+  describe('POST /api/dictionarys/upload', function() {
+
+    it('should route to dictionary.controller.create', function() {
+      routerStub.post
+        .withArgs('/upload', 'authService.isAuthenticated', 'uploadService.fileToReqBody', 'dictionaryCtrl.create')
+        .should.have.been.calledOnce;
+    });
+
+  });
+  
   describe('PUT /api/dictionarys/:id', function() {
 
     it('should route to dictionary.controller.update', function() {

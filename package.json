@@ -23,7 +23,8 @@
     "express-jwt": "^3.0.0",
     "passport": "~0.3.0",
     "passport-local": "^1.0.0",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "busboy" : "^0.2.13"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.0",

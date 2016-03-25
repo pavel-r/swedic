@@ -9,7 +9,8 @@ angular.module('swedicApp', [
   'ngSanitize',
   'ui.router',
   'ui.bootstrap',
-  'validation.match'
+  'validation.match',
+  'lr.upload'
 ])
   .config(function($urlRouterProvider, $locationProvider) {
     $urlRouterProvider

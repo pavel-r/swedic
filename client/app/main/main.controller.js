@@ -10,7 +10,7 @@ class MainController {
 
     self.dictionarys = [];
 
-    dictionarys.getDictionarys().then(data => {
+    self.dictionarysDao.getDictionarys().then(data => {
       self.dictionarys = data;
     });
   }
@@ -24,6 +24,13 @@ class MainController {
     }
   }
 
+  refreshDictionaries() {
+    var self = this;
+    self.dictionarysDao.getDictionarys().then(data => {
+      self.dictionarys = data;
+    });
+  }
+  
   deleteDictionary(dictionary) {
     var self = this;
     self.dictionarysDao.deleteDictionary(dictionary).then(data => {
