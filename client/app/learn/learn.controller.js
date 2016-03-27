@@ -55,6 +55,12 @@ class LearnCtrl {
       self.translationHtml = resp.trustedHtml;
     });
   }
+
+  play(){
+    var self = this;
+    document.getElementById('player').src = self.card.soundUrl;
+    document.getElementById('player').play();
+  }
 }
 
 angular.module('swedicApp')

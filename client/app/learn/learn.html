@@ -23,8 +23,11 @@
         </div>
         <div class="form-group">
           <label for="word">Word</label>
-          <span class="form-control">{{learn.card.name}}</span>
+          <span class="form-control" ng-click="learn.play()">
+            <span class="glyphicon glyphicon-bullhorn"></span>&nbsp;{{learn.card.name}}
+          </span>
         </div>
+        <audio id="player"></audio>
         <div class="form-group">
           <label for="translation">Translation</label>
           <span class="form-control" ng-click="learn.showTranslation = true;">
