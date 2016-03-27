@@ -25,28 +25,6 @@ function respondWithResult(res, statusCode) {
   };
 }
 
-
-function saveUpdates(updates) {
-  return function(entity) {
-    var updated = _.merge(entity, updates);
-    return updated.saveAsync()
-      .spread(updated => {
-        return updated;
-      });
-  };
-}
-
-function removeEntity(res) {
-  return function(entity) {
-    if (entity) {
-      return entity.removeAsync()
-        .then(() => {
-          res.status(204).end();
-        });
-    }
-  };
-}
-
 function handleEntityNotFound(res) {
   return function(entity) {
     if (!entity) {
@@ -57,42 +35,10 @@ function handleEntityNotFound(res) {
   };
 }
 
-function validateUserId(userId){
-  return function(entity){
-    if(entity){
-      if(!userId.equals(entity.user_id)){
-        return null;
-      }
-    }
-    return entity;
-  };
-}
-
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
   return function(err) {
     res.status(statusCode).send(err);
-  };
-}
-
-function createCardForDictionary(card){
-  return function(entity){
-    entity.cards.push(card);
-    return entity;
-  };
-}
-
-function removeCardFromDictionary(cardId){
-  return function(entity){
-    entity.cards.pull({_id : cardId});
-    return entity;
-  };
-}
-
-function updateCardInDictionary(cardId, update){
-  return function(entity){
-    _.merge(entity.cards.id(cardId), update);
-    return entity;
   };
 }
 
@@ -106,8 +52,7 @@ export function index(req, res) {
 // Gets a single Dictionary from the DB
 export function show(req, res) {
   var projection = req.query.to_json ? '-_id -__v -cards._id' : '';
-  Dictionary.findByIdAsync(req.params.id, projection)
-    .then(validateUserId(req.user._id))
+  Dictionary.findOneAsync({_id : req.params.id, user_id : req.user._id}, projection)
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
     .catch(handleError(res));
@@ -126,20 +71,20 @@ export function update(req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
-  Dictionary.findByIdAsync(req.params.id)
-    .then(validateUserId(req.user._id))
+  Dictionary.findOneAndUpdateAsync(
+    {_id : req.params.id, user_id : req.user._id}, 
+    {$set : req.body},
+    {new : true})
     .then(handleEntityNotFound(res))
-    .then(saveUpdates(req.body))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
 // Deletes a Dictionary from the DB
 export function destroy(req, res) {
-  Dictionary.findByIdAsync(req.params.id)
-    .then(validateUserId(req.user._id))
+  Dictionary.findOneAndRemoveAsync({_id : req.params.id, user_id : req.user._id})
     .then(handleEntityNotFound(res))
-    .then(removeEntity(res))
+    .then(respondWithResult(res, 204))
     .catch(handleError(res));
 }
 
@@ -148,11 +93,11 @@ export function createCard(req, res) {
   if(req.body._id){
     delete req.body._id;
   }
-  Dictionary.findByIdAsync(req.params.id)
-    .then(validateUserId(req.user._id))
+  Dictionary.findOneAndUpdateAsync({
+    _id : req.params.id, user_id : req.user._id}, 
+    {$push : {cards : req.body}},
+    {new : true})
     .then(handleEntityNotFound(res))
-    .then(createCardForDictionary(req.body))
-    .then(saveUpdates())
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
@@ -162,22 +107,31 @@ export function updateCard(req, res) {
   if(req.body._id){
     delete req.body._id;
   }
-  Dictionary.findByIdAsync(req.params.id)
-    .then(validateUserId(req.user._id))
+  var update = Object.keys(req.body).reduce((aggr, prop) => {
+    aggr['cards.$.' + prop] = req.body[prop];
+    return aggr;
+  }, {});
+  console.log('Update card: ' + JSON.stringify(update));
+  Dictionary.findOneAndUpdateAsync(
+    {
+      _id : req.params.id, 
+      user_id : req.user._id, 
+      'cards._id' : req.params.cardId  
+    },
+    {$set : update },
+    {new : true})
     .then(handleEntityNotFound(res))
-    .then(updateCardInDictionary(req.params.cardId, req.body))
-    .then(saveUpdates())
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
 // Delete a new Card in the Dictionary
 export function destroyCard(req, res) {
-  Dictionary.findByIdAsync(req.params.id)
-    .then(validateUserId(req.user._id))
+    Dictionary.findOneAndUpdateAsync({
+    _id : req.params.id, user_id : req.user._id}, 
+    {$pull : {cards : {_id : req.params.cardId} } },
+    {new : true})
     .then(handleEntityNotFound(res))
-    .then(removeCardFromDictionary(req.params.cardId))
-    .then(saveUpdates())
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
