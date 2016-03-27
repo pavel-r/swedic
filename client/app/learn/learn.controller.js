@@ -19,9 +19,7 @@ class LearnCtrl {
 
   resetCards() {
     var self = this;
-    self.cards = _.shuffle(self.dictionary.cards.filter(c => {
-        return !c.learnt;
-    }));
+    self.cards = _.shuffle(self.dictionary.cards.filter(c => !c.learnt));
     self.totalCardsToLearn = self.cards.length;
     if(self.cards.length === 0){
       self.$state.go('edit', {id : self.$stateParams.id});

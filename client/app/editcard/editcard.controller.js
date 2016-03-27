@@ -13,9 +13,7 @@ class EditCardController {
 
     dictionarys.getDictionaryById($stateParams.id).then(dictionary => {
       self.dictionary = dictionary;
-      self.card = dictionary.cards.find((c) => {
-        return c._id === self.$stateParams.cardId;
-      });
+      self.card = dictionary.cards.filter(c => c._id === self.$stateParams.cardId)[0];
     });
   }
 
