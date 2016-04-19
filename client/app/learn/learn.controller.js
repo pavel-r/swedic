@@ -10,6 +10,7 @@ class LearnCtrl {
   	self.$stateParams = $stateParams;
     self.dictioanrysDao = dictionarys;
     self.translateService = translate;
+    self.editMode = false;
 
     dictionarys.getDictionaryById($stateParams.id).then(dictionary => {
       self.dictionary = dictionary;
@@ -27,7 +28,7 @@ class LearnCtrl {
       self.nextCard();
     }
   }
-  
+
   learnCard(card) {
     var self = this;
     self.card.learnt = true;
@@ -35,7 +36,23 @@ class LearnCtrl {
       self.nextCard();
     });
   }
-  
+
+  editCard(card) {
+    var self = this;
+    self._cardName = card.name;
+    self._cardTranslation = card.translation;
+    self.editMode = true;
+  }
+
+  saveCard(card) {
+    var self = this;
+    card.name = self._cardName;
+    card.translation = self._cardTranslation;
+    self.dictioanrysDao.updateCardInDictionary(self.dictionary, card).then(() =>{
+      self.editMode = false;
+    });
+  }
+
   nextCard(){
     var self = this;
     self.showTranslation = false;

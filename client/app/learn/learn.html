@@ -23,20 +23,29 @@
         </div>
         <div class="form-group">
           <label for="word">Word</label>
-          <span class="form-control" ng-click="learn.play()">
+          <span ng-if="!learn.editMode" class="form-control" ng-click="learn.play()">
             <span class="glyphicon glyphicon-bullhorn"></span>&nbsp;{{learn.card.name}}
           </span>
+          <input ng-if="learn.editMode" type="text" id="word" name="word" class="form-control" ng-model="learn._cardName" />
         </div>
         <audio id="player"></audio>
         <div class="form-group">
           <label for="translation">Translation</label>
-          <span class="form-control" ng-click="learn.showTranslation = true;">
-            {{learn.showTranslation ? learn.card.translation : ''}}
+          <span ng-if="!learn.editMode" class="form-control" ng-click="learn.showTranslation = true;">
+            {{learn.showTranslation ? learn.card.translation : 'Tap here to see translation...'}}
           </span>
+          <input ng-if="learn.editMode" type="text" id="translation" name="translation" class="form-control" ng-model="learn._cardTranslation" />
         </div>
-        <button class="btn btn-primary" ng-click="learn.nextCard()">Next</button>
-        <button class="btn btn-success" ng-click="learn.learnCard(learn.card)">Learn</button>
-        <button class="btn btn-primary" ng-click="learn.translateCard(learn.card)">Translate</button>
+        <div ng-if="!learn.editMode">
+          <button class="btn btn-primary" ng-click="learn.nextCard()">Next</button>
+          <button class="btn btn-success" ng-click="learn.learnCard(learn.card)">Learn</button>
+          <button class="btn btn-primary" ng-click="learn.translateCard(learn.card)">Translate</button>
+          <button class="btn" ng-click="learn.editCard(learn.card)">Edit</button>
+        </div>
+        <div ng-if="learn.editMode">
+          <button class="btn" ng-click="learn.editMode = false">Cancel</button>
+          <button class="btn btn-success" ng-click="learn.saveCard(learn.card)">Save</button>
+        </div>
         <div ng-bind-html="learn.translationHtml"></div>
       </div>
 

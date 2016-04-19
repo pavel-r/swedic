@@ -7,14 +7,9 @@
 import Dictionary from '../api/dictionary/dictionary.model';
 import User from '../api/user/user.model';
 
-Dictionary.find({}).removeAsync()
-  .then(() => {
-    //Dictionary.create();
-  });
-
 User.find({}).removeAsync()
   .then(() => {
-    User.createAsync({
+    return User.createAsync({
       provider: 'local',
       name: 'Test User',
       email: 'test@example.com',
@@ -28,5 +23,25 @@ User.find({}).removeAsync()
     })
     .then(() => {
       console.log('finished populating users');
+    });
+  })
+  .then(() => {
+    return Dictionary.find({}).removeAsync();
+  })
+  .then(() => {
+    return User.findOneAsync({name: 'Test User'})
+    .then(user => {
+      return Dictionary.createAsync({
+        name: 'Dictionary A',
+        user_id: user._id,
+        cards: [{
+          name : "hej",
+  	      translation : "hi, hello",
+  	      learnt : false
+        }]
+      });
+    })
+    .then(() => {
+      console.log('finised populating dictionarys for Test User');
     });
   });
