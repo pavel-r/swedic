@@ -74,11 +74,11 @@ export default function(app) {
     app.use(morgan('dev'));
   }
 
-  if ('development' === env) {
+  if ('development' === env || 'docker' === env) {
     app.use(require('connect-livereload')());
   }
 
-  if ('development' === env || 'test' === env) {
+  if ('development' === env || 'docker' === env || 'test' === env) {
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(app.get('appPath')));
     app.use(morgan('dev'));
