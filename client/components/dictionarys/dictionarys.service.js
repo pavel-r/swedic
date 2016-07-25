@@ -81,4 +81,11 @@ angular.module('swedicApp')
         	return response.data;
       });
     };
+    
+    this.resetDictionary = function(dictionary) {
+      invalidateCache();
+      return $http.put('/api/dictionarys/' + dictionary._id + '/reset').then(response => {
+          return response.data;
+      });
+    };
   });

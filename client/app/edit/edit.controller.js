@@ -24,6 +24,15 @@ class EditController {
       });
     }
   }
+
+  resetDic(dictionary) {
+    var self = this;
+    if(dictionary){
+      self.dictioanrysDao.resetDictionary(dictionary).then(updatedDictionary => {
+        self.dictionary = updatedDictionary;
+      });
+    }
+  }
 }
 
 angular.module('swedicApp')

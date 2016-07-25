@@ -4,6 +4,7 @@
  * POST    /api/dictionarys              ->  create
  * GET     /api/dictionarys/:id          ->  show
  * PUT     /api/dictionarys/:id          ->  update
+ * PUT     /api/dictionarys/:id/reset    ->  reset
  * DELETE  /api/dictionarys/:id          ->  destroy
  * 
  * POST    /api/dictionarys/:id/cards           ->  create
@@ -80,6 +81,21 @@ export function update(req, res) {
     .catch(handleError(res));
 }
 
+//Set all cards in the dictionary as not learnt
+export function reset(req, res) {
+  Dictionary.findOneAndUpdateAsync(
+    {
+      _id : req.params.id, 
+      user_id : req.user._id,
+      'cards._id' : { $exists: true }
+    },
+    {$set : {'cards.$.learnt' : false}},
+    {new : true})
+    .then(handleEntityNotFound(res))
+    .then(respondWithResult(res))
+    .catch(handleError(res));
+}
+
 // Deletes a Dictionary from the DB
 export function destroy(req, res) {
   Dictionary.findOneAndRemoveAsync({_id : req.params.id, user_id : req.user._id})
@@ -93,8 +109,11 @@ export function createCard(req, res) {
   if(req.body._id){
     delete req.body._id;
   }
-  Dictionary.findOneAndUpdateAsync({
-    _id : req.params.id, user_id : req.user._id}, 
+  Dictionary.findOneAndUpdateAsync(
+    {
+      _id : req.params.id, 
+      user_id : req.user._id
+    }, 
     {$push : {cards : req.body}},
     {new : true})
     .then(handleEntityNotFound(res))
