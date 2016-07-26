@@ -26,6 +26,8 @@ This project was generated with the [Angular Full-Stack Generator](https://githu
 
 Run `grunt build` for building and `grunt serve` for preview.
 
+Run `git push heroku master` from dist folder to deploy to Heroku. You should have initialized git repository in dist folder with heroku remote.
+
 ## Testing
 
 Running `npm test` will run the unit tests with karma.
