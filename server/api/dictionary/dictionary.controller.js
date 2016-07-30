@@ -83,14 +83,21 @@ export function update(req, res) {
 
 //Set all cards in the dictionary as not learnt
 export function reset(req, res) {
-  Dictionary.findOneAndUpdateAsync(
+  Dictionary.findOneAsync(
     {
       _id : req.params.id, 
-      user_id : req.user._id,
-      'cards._id' : { $exists: true }
-    },
-    {$set : {'cards.$.learnt' : false}},
-    {new : true})
+      user_id : req.user._id
+    })
+    .then(dic => {
+      if (dic) {
+        dic.cards.forEach(card => {
+          card.learnt = false;
+        });
+        return dic.saveAsync(dic).then(() => { return dic});
+      } else {
+        return null;
+      }
+    })
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
     .catch(handleError(res));
