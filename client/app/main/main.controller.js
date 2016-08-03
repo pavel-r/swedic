@@ -4,7 +4,7 @@
 
 class MainController {
 
-  constructor($http, dictionarys) {
+  constructor(dictionarys) {
     var self = this;
     self.dictionarysDao = dictionarys;
 

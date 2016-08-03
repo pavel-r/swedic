@@ -25,6 +25,13 @@ angular.module('swedicApp')
       }
     };
 
+    this.getPublicDictionarys = function() {
+      // return $http.get('api/public').then(response => {
+      //   return response.data;
+      // });
+      return $q.when([]);
+    };
+
     this.getDictionaryById = function(id){
       if(dictionarysCache){
         var dictionary = dictionarysCache.filter((d) => { 
