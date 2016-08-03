@@ -3,7 +3,7 @@
 angular.module('swedicApp')
   .config(function ($stateProvider) {
     $stateProvider
-      .state('edit', {
+      .state('main.edit', {
         url: '/edit/:id',
         templateUrl: 'app/edit/edit.html',
         controller: 'EditController',

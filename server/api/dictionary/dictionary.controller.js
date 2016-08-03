@@ -1,6 +1,7 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
  * GET     /api/dictionarys              ->  index
+ * GET     /api/dictionarys/public       ->  public
  * POST    /api/dictionarys              ->  create
  * GET     /api/dictionarys/:id          ->  show
  * PUT     /api/dictionarys/:id          ->  update
@@ -50,10 +51,28 @@ export function index(req, res) {
     .catch(handleError(res));
 }
 
+// Gets all public dictionaries
+export function indexPublic(req, res) {
+  Dictionary.findAsync({isPublic : true})
+    .then(result => {
+      console.log(JSON.stringify(result));
+      return result;
+    })
+    .then(respondWithResult(res))
+    .catch(handleError(res));
+}
+
 // Gets a single Dictionary from the DB
 export function show(req, res) {
   var projection = req.query.to_json ? '-_id -__v -cards._id' : '';
-  Dictionary.findOneAsync({_id : req.params.id, user_id : req.user._id}, projection)
+  Dictionary.findOneAsync({
+      _id: req.params.id,
+      $or: [{
+        isPublic: true
+      }, {
+        user_id: req.user._id
+      }]
+    }, projection)
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
     .catch(handleError(res));
@@ -61,7 +80,15 @@ export function show(req, res) {
 
 // Creates a new Dictionary in the DB
 export function create(req, res) {
+  console.log(JSON.stringify(req.user));
   req.body.user_id = req.user._id;
+  req.body.user_name = req.user.name;
+  if (req.body._id) {
+    delete req.body._id;
+  }
+  if (req.body.isPublic) {
+    delete req.body.isPublic;
+  }
   Dictionary.createAsync(req.body)
     .then(respondWithResult(res, 201))
     .catch(handleError(res));
@@ -72,6 +99,7 @@ export function update(req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
+  console.log(JSON.stringify(req.body));
   Dictionary.findOneAndUpdateAsync(
     {_id : req.params.id, user_id : req.user._id}, 
     {$set : req.body},
@@ -113,16 +141,19 @@ export function destroy(req, res) {
 
 // Create a new Card in the Dictionary
 export function createCard(req, res) {
-  if(req.body._id){
+  if (req.body._id) {
     delete req.body._id;
   }
-  Dictionary.findOneAndUpdateAsync(
-    {
-      _id : req.params.id, 
-      user_id : req.user._id
-    }, 
-    {$push : {cards : req.body}},
-    {new : true})
+  Dictionary.findOneAndUpdateAsync({
+      _id: req.params.id,
+      user_id: req.user._id
+    }, {
+      $push: {
+        cards: req.body
+      }
+    }, {
+      new: true
+    })
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
     .catch(handleError(res));
@@ -138,14 +169,15 @@ export function updateCard(req, res) {
     return aggr;
   }, {});
   console.log('Update card: ' + JSON.stringify(update));
-  Dictionary.findOneAndUpdateAsync(
-    {
-      _id : req.params.id, 
-      user_id : req.user._id, 
-      'cards._id' : req.params.cardId  
-    },
-    {$set : update },
-    {new : true})
+  Dictionary.findOneAndUpdateAsync({
+      _id: req.params.id,
+      user_id: req.user._id,
+      'cards._id': req.params.cardId
+    }, {
+      $set: update
+    }, {
+      new: true
+    })
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
     .catch(handleError(res));
@@ -154,10 +186,18 @@ export function updateCard(req, res) {
 // Delete a new Card in the Dictionary
 export function destroyCard(req, res) {
     Dictionary.findOneAndUpdateAsync({
-    _id : req.params.id, user_id : req.user._id}, 
-    {$pull : {cards : {_id : req.params.cardId} } },
-    {new : true})
-    .then(handleEntityNotFound(res))
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+        _id: req.params.id,
+        user_id: req.user._id
+      }, {
+        $pull: {
+          cards: {
+            _id: req.params.cardId
+          }
+        }
+      }, {
+        new: true
+      })
+      .then(handleEntityNotFound(res))
+      .then(respondWithResult(res))
+      .catch(handleError(res));
 }

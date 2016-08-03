@@ -1,7 +1,7 @@
 <header class="hero-unit" id="banner">
   <div class="container">
     <ol class="breadcrumb">
-      <li><a ui-sref="main">Dictionaries</a></li>
+      <li><a ui-sref="main.list">Dictionaries</a></li>
       <li class="active">{{edit.dictionary.name}}</li>
     </ol>
   </div>
@@ -14,7 +14,7 @@
       <div class="list-group">
         <span class="list-group-item">
           <span class="">
-            <a class="btn btn-xs btn-info" ui-sref="editcard({ id: edit.dictionary._id, cardId : 'new'})">
+            <a class="btn btn-xs btn-info" ui-sref="main.editcard({ id: edit.dictionary._id, cardId : 'new'})">
                <span class="glyphicon glyphicon-plus"></span>Add new card</a>
           </span>
           <span>
@@ -27,6 +27,16 @@
           <span>
             <button class="btn btn-xs btn-info" ng-click="edit.resetDic(edit.dictionary)">
               <span class="glyphicon glyphicon-refresh">Reset</span>
+            </button>
+          </span>
+          <span ng-if="edit.dictionary.isPublic">
+            <button class="btn btn-xs btn-success" ng-click="edit.togglePublic(edit.dictionary)">
+              <span class="glyphicon glyphicon-check">Public</span>
+            </button>
+          </span>
+          <span ng-if="!edit.dictionary.isPublic">
+            <button class="btn btn-xs" ng-click="edit.togglePublic(edit.dictionary)">
+              <span class="glyphicon glyphicon-unchecked">Public</span>
             </button>
           </span>
           &nbsp;

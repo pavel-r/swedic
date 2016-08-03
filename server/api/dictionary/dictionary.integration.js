@@ -67,6 +67,30 @@ describe('Dictionary API:', function() {
 
   });
 
+  describe('GET /api/dictionarys/public', function() {
+    var dictionarys;
+
+    beforeEach(function(done) {
+      request(app)
+        .get('/api/dictionarys/public')
+        .set('authorization', 'Bearer ' + token)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          dictionarys = res.body;
+          done();
+        });
+    });
+
+    it('should respond with JSON array', function() {
+      dictionarys.should.be.instanceOf(Array);
+    });
+
+  });
+
   describe('POST /api/dictionarys', function() {
     beforeEach(function(done) {
       request(app)

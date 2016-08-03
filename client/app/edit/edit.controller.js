@@ -33,6 +33,15 @@ class EditController {
       });
     }
   }
+  
+  togglePublic(dictionary) {
+    var self = this;
+    if(dictionary){
+      self.dictioanrysDao.updateDictionary({_id : dictionary._id, isPublic: !dictionary.isPublic}).then(updatedDictionary => {
+        self.dictionary = updatedDictionary;
+      });
+    }
+  }
 }
 
 angular.module('swedicApp')

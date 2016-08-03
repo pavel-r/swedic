@@ -18,7 +18,7 @@ class EditCardController {
   }
 
   goToEditState(){
-    this.$state.go('edit', {id : this.$stateParams.id});
+    this.$state.go('main.edit', {id : this.$stateParams.id});
   }
 
   saveCard(card) {

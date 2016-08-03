@@ -1,8 +1,8 @@
 <header class="hero-unit" id="banner">
   <div class="container">
     <ol class="breadcrumb">
-      <li><a ui-sref="main">Dictionaries</a></li>
-      <li><a ui-sref="edit({id : editcard.$stateParams.id})">{{editcard.dictionary.name}}</a></li>
+      <li><a ui-sref="main.list">Dictionaries</a></li>
+      <li><a ui-sref="main.edit({id : editcard.$stateParams.id})">{{editcard.dictionary.name}}</a></li>
       <li class="active">{{editcard.card._id ? 'Edit' : 'Add'}}</li>
     </ol>
   </div>

@@ -12,9 +12,9 @@
 
       <div class="list-group">
         <span class="list-group-item" ng-repeat="dictionary in main.dictionarys">
-          <a ui-sref="learn({ id: dictionary._id })">{{dictionary.name}}</a>
+          <a ui-sref="main.learn({ id: dictionary._id })">{{dictionary.name}}</a>
           <span class="pull-right">
-            <a class="btn btn-xs btn-info" ui-sref="edit({ id: dictionary._id })">
+            <a class="btn btn-xs btn-info" ui-sref="main.edit({ id: dictionary._id })">
                <span class="glyphicon glyphicon-pencil"></span>Edit</a>
             <button class="btn btn-xs btn-warning" ng-click="main.deleteDictionary(dictionary); $event.stopPropagation();">
               <span class="glyphicon glyphicon-trash"></span>

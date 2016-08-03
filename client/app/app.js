@@ -15,6 +15,8 @@ angular.module('swedicApp', [
   .config(function($urlRouterProvider, $locationProvider) {
     $urlRouterProvider
       .otherwise('/main');
+    $urlRouterProvider.when('/main', '/main/list');
+    $urlRouterProvider.when('/public', '/public/list');
 
     $locationProvider.html5Mode(true);
   });

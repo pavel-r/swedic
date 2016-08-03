@@ -4,6 +4,7 @@ var proxyquire = require('proxyquire').noPreserveCache();
 
 var dictionaryCtrlStub = {
   index: 'dictionaryCtrl.index',
+  indexPublic: 'dictionaryCtrl.indexPublic',
   show: 'dictionaryCtrl.show',
   create: 'dictionaryCtrl.create',
   upload: 'dictionaryCtrl.create',
@@ -60,6 +61,16 @@ describe('Dictionary API Router:', function() {
     it('should route to dictionary.controller.index', function() {
       routerStub.get
         .withArgs('/', 'authService.isAuthenticated', 'dictionaryCtrl.index')
+        .should.have.been.calledOnce;
+    });
+
+  });
+
+  describe('GET /api/dictionarys/public', function() {
+
+    it('should route to dictionary.controller.indexPublic', function() {
+      routerStub.get
+        .withArgs('/public', 'authService.isAuthenticated', 'dictionaryCtrl.indexPublic')
         .should.have.been.calledOnce;
     });
 

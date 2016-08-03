@@ -8,6 +8,7 @@ var upload = require('../../upload/upload.service');
 var router = express.Router();
 
 router.get('/', auth.isAuthenticated(), controller.index);
+router.get('/public', auth.isAuthenticated(), controller.indexPublic);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', auth.isAuthenticated(), controller.create);
 router.post('/upload', auth.isAuthenticated(), upload.fileToReqBody(), controller.create);
