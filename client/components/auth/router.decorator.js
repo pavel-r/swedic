@@ -28,7 +28,7 @@ angular.module('swedicApp.auth')
           }
 
           event.preventDefault();
-          $state.go('main');
+          $state.go('login');
         });
       }
     });
