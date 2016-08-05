@@ -41,32 +41,105 @@ describe('User Model', function() {
   });
 
   describe('#email', function() {
-    it('should fail when saving without an email', function() {
+    it('should fail when saving with brank email', function() {
       user.email = '';
       return user.saveAsync().should.be.rejected;
+    });
+
+    it('should fail when saving with a null email', function() {
+      user.email = null;
+      return user.saveAsync().should.be.rejected;
+    });
+
+    it('should fail when saving without an email', function() {
+      user.email = undefined;
+      return user.saveAsync().should.be.rejected;
+    });
+
+    describe('given user provider is facebook', function() {
+      beforeEach(function() {
+        user.provider = 'facebook';
+      });
+
+      it('should succeed when saving without an email', function() {
+        user.email = null;
+        return user.saveAsync().should.be.fulfilled;
+      });
+    });
+
+    describe('given user provider is github', function() {
+      beforeEach(function() {
+        user.provider = 'github';
+      });
+
+      it('should succeed when saving without an email', function() {
+        user.email = null;
+        return user.saveAsync().should.be.fulfilled;
+      });
     });
   });
 
   describe('#password', function() {
-    beforeEach(function() {
-      return user.saveAsync();
+
+   it('should fail when saving with a blank password', function() {
+      user.password = '';
+      return user.saveAsync().should.be.rejected;
     });
 
-    it('should authenticate user if valid', function() {
-      user.authenticate('password').should.be.true;
+    it('should fail when saving with a null password', function() {
+      user.password = null;
+      return user.saveAsync().should.be.rejected;
     });
 
-    it('should not authenticate user if invalid', function() {
-      user.authenticate('blah').should.not.be.true;
+    it('should fail when saving without a password', function() {
+      user.password = undefined;
+      return user.saveAsync().should.be.rejected;
     });
 
-    it('should remain the same hash unless the password is updated', function() {
-      user.name = 'Test User';
-      return user.saveAsync()
-        .spread(function(u) {
-          return u.authenticate('password');
-        }).should.eventually.be.true;
+    describe('given the user has been previously saved', function() {
+      beforeEach(function() {
+        return user.saveAsync();
+      });
+
+      it('should authenticate user if valid', function() {
+        user.authenticate('password').should.be.true;
+      });
+
+      it('should not authenticate user if invalid', function() {
+        user.authenticate('blah').should.not.be.true;
+      });
+
+      it('should remain the same hash unless the password is updated', function() {
+        user.name = 'Test User';
+        return user.saveAsync()
+          .spread(function(u) {
+            return u.authenticate('password');
+          }).should.eventually.be.true;
+      });
     });
+
+    describe('given user provider is facebook', function() {
+      beforeEach(function() {
+        user.provider = 'facebook';
+      });
+
+      it('should succeed when saving without a password', function() {
+        user.password = null;
+        return user.saveAsync().should.be.fulfilled;
+      });
+    });
+
+    describe('given user provider is github', function() {
+      beforeEach(function() {
+        user.provider = 'github';
+      });
+
+      it('should succeed when saving without a password', function() {
+        user.password = null;
+        return user.saveAsync().should.be.fulfilled;
+      });
+    });
+    
   });
 
 });

@@ -4,19 +4,39 @@ import crypto from 'crypto';
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 import {Schema} from 'mongoose';
 
+const authTypes = ['github', 'twitter', 'facebook', 'google']; 
+
 var UserSchema = new Schema({
   name: String,
   email: {
     type: String,
-    lowercase: true
+    lowercase: true,
+    required() {
+      if(authTypes.indexOf(this.provider) === -1) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   role: {
     type: String,
     default: 'user'
   },
-  password: String,
+  password: {
+    type: String,
+    required() {
+      if(authTypes.indexOf(this.provider) === -1) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
   provider: String,
-  salt: String
+  salt: String,
+  facebook: {},
+  github: {}
 });
 
 /**
@@ -51,6 +71,9 @@ UserSchema
 UserSchema
   .path('email')
   .validate(function(email) {
+    if(authTypes.indexOf(this.provider) !== -1) {
+      return true;
+    }
     return email.length;
   }, 'Email cannot be blank');
 
@@ -58,6 +81,9 @@ UserSchema
 UserSchema
   .path('password')
   .validate(function(password) {
+    if(authTypes.indexOf(this.provider) !== -1) {
+      return true;
+    }
     return password.length;
   }, 'Password cannot be blank');
 
@@ -66,6 +92,10 @@ UserSchema
   .path('email')
   .validate(function(value, respond) {
     var self = this;
+    if(authTypes.indexOf(this.provider) !== -1) {
+      return respond(true);
+    }
+
     return this.constructor.findOneAsync({ email: value })
       .then(function(user) {
         if (user) {
@@ -96,7 +126,11 @@ UserSchema
     }
 
     if (!validatePresenceOf(this.password)) {
-      next(new Error('Invalid password'));
+      if(authTypes.indexOf(this.provider) === -1) {
+        return next(new Error('Invalid password'));
+      } else {
+        return next();
+      }
     }
 
     // Make salt with a callback
