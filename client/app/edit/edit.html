@@ -44,7 +44,7 @@
         <span class="list-group-item" 
           ng-repeat="card in edit.dictionary.cards"
           ng-class="{'learnt' : card.learnt}">
-          <a class="" ui-sref="editcard({ id: edit.dictionary._id, cardId: card._id })">{{card.name}}</a>
+          <a class="" ui-sref="main.editcard({ id: edit.dictionary._id, cardId: card._id })">{{card.name}}</a>
           <span class="pull-right">
             <button class="btn btn-xs btn-warning" ng-click="edit.deleteCard(card)">
               <span class="glyphicon glyphicon-trash"></span>
